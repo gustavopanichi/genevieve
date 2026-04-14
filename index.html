@@ -104,18 +104,33 @@
     .hero {
       padding-top: 56px;
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1px 1fr;
-      grid-template-rows: 1fr;
       position: relative;
     }
-    .hero .line-v { background: var(--line); }
 
-    .hero-left {
+    .hero-painting {
+      position: absolute;
+      top: 56px;
+      right: 0;
+      bottom: 0;
+      width: 55%;
+      overflow: hidden;
+    }
+    .hero-art {
+      position: absolute;
+      inset: 0;
+      background: url('images/Background.png') center center / cover no-repeat;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 6;
+      min-height: calc(100vh - 56px);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 80px 60px 80px 0;
+      padding: 80px 40px 80px 40px;
+      max-width: 1440px;
+      margin: 0 auto;
     }
     .hero-label {
       font-family: var(--font-body);
@@ -128,11 +143,12 @@
     }
     .hero-name {
       font-family: var(--font-head);
-      font-size: clamp(4rem, 8vw, 7.5rem);
+      font-size: clamp(5rem, 13vw, 14rem);
       font-weight: 800;
-      line-height: 0.9;
-      letter-spacing: -0.02em;
+      line-height: 0.85;
+      letter-spacing: -0.03em;
       margin-bottom: 32px;
+      mix-blend-mode: multiply;
     }
     .hero-title {
       font-family: var(--font-head);
@@ -141,22 +157,6 @@
       color: var(--mid-gray);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-    }
-
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-art {
-      position: absolute;
-      inset: 0;
-      background: url('images/Background.png') center center / cover no-repeat;
-    }
-    .hero-art-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none; /* Show when image file is added */
     }
 
     .hero-bottom-strip {
@@ -673,8 +673,10 @@
 
     /* ─── PAINT SMUDGE CANVAS ─── */
     .paint-surface {
-      position: relative;
       cursor: crosshair;
+    }
+    .paint-surface:not([class*="hero-painting"]) {
+      position: relative;
     }
     .paint-surface canvas.smudge-canvas {
       position: absolute;
@@ -775,15 +777,15 @@
     .stagger > .reveal:nth-child(8) { transition-delay: 0.56s; }
 
     /* Hero specific — already visible on load, animated with CSS */
-    .hero-left .hero-label,
-    .hero-left .hero-name,
-    .hero-left .hero-title {
+    .hero-content .hero-label,
+    .hero-content .hero-name,
+    .hero-content .hero-title {
       opacity: 0;
       animation: heroFadeUp 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
-    .hero-left .hero-label { animation-delay: 0.3s; }
-    .hero-left .hero-name { animation-delay: 0.5s; }
-    .hero-left .hero-title { animation-delay: 0.75s; }
+    .hero-content .hero-label { animation-delay: 0.3s; }
+    .hero-content .hero-name { animation-delay: 0.5s; }
+    .hero-content .hero-title { animation-delay: 0.75s; }
 
     .hero-art {
       opacity: 0;
@@ -820,9 +822,8 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1024px) {
-      .hero { grid-template-columns: 1fr; grid-template-rows: 1fr 50vh; }
-      .hero .line-v { display: none; }
-      .hero-left { padding: 120px 0 60px; }
+      .hero-painting { width: 100%; top: 56px; bottom: 50%; }
+      .hero-content { padding: 80px 20px; }
       .bio-grid { grid-template-columns: 1fr; }
       .bio-cell { border-right: none; border-bottom: 1px solid var(--line); padding: 40px 0; }
       .bio-cell:last-child { border-bottom: none; }
@@ -890,16 +891,14 @@
   </nav>
 
   <!-- HERO -->
-  <div class="hero" style="max-width:1440px;margin:0 auto;padding:0 40px;">
-    <div class="hero-left">
-      <div class="hero-label">Staff Design Program Manager</div>
-      <h1 class="hero-name">Genevieve<br>Isola</h1>
-      <div class="hero-title">Designing Creative Momentum</div>
-    </div>
-    <div class="line-v"></div>
-    <div class="hero-right paint-surface">
+  <div class="hero">
+    <div class="hero-painting paint-surface">
       <div class="hero-art"></div>
-
+    </div>
+    <div class="hero-content">
+      <div class="hero-label">Staff Design Program Manager</div>
+      <h1 class="hero-name">Genevieve Isola</h1>
+      <div class="hero-title">Designing Creative Momentum</div>
     </div>
   </div>
   <div class="hero-bottom-strip">
@@ -1196,9 +1195,10 @@
       const STEPS = 2;
 
       function getImageURL(surface) {
-        const artEl = surface.querySelector('[class*="-art"], [class*="img-panel-"]');
-        if (!artEl) return null;
-        const bg = getComputedStyle(artEl || surface).backgroundImage;
+        // Check child elements first, then the surface itself
+        const artEl = surface.querySelector('[class*="-art"]');
+        const el = artEl || surface;
+        const bg = getComputedStyle(el).backgroundImage;
         const match = bg.match(/url\(["']?(.+?)["']?\)/);
         return match ? match[1] : null;
       }
