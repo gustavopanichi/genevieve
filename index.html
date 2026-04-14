@@ -145,6 +145,11 @@
       padding: 80px 40px 80px 40px;
       max-width: 100%;
       margin: 0 auto;
+      pointer-events: none;
+    }
+    .hero-content a,
+    .hero-content button {
+      pointer-events: auto;
     }
     .hero-label {
       font-family: var(--font-body);
@@ -491,41 +496,30 @@
       background: url('images/Layer%205.png') center center / cover no-repeat;
     }
 
-    /* ─── PRINCIPLES STRIP ─── */
+    /* ─── PRINCIPLES (inline flow) ─── */
     .principles {
+      padding: 60px 40px 80px;
     }
-    .principles-grid {
-      max-width: 100%;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      padding: 0 40px;
+    .principles-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
     }
-    .principle-cell {
-      padding: 48px 24px 48px 0;
-      border-right: 1px solid var(--line);
-    }
-    .principle-cell:last-child { border-right: none; }
-    .principle-cell .p-num {
+    .principles-list span {
       font-family: var(--font-head);
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--light-gray);
-      margin-bottom: 16px;
-    }
-    .principle-cell h3 {
-      font-family: var(--font-head);
-      font-size: 1.05rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 10px;
-    }
-    .principle-cell p {
-      font-size: 0.8rem;
+      font-size: clamp(1rem, 1.6vw, 1.3rem);
+      font-weight: 500;
       color: var(--mid-gray);
-      line-height: 1.55;
+      white-space: nowrap;
+    }
+    .principles-list span::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--line);
+      margin-right: 12px;
+      vertical-align: middle;
     }
 
     /* ─── CAREER PATH ─── */
@@ -538,15 +532,13 @@
     }
     .career-timeline {
       display: grid;
-      grid-template-columns: 1fr 1px 1fr 1px 1fr;
-      border-top: 1px solid var(--line);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0 60px;
       margin-top: 80px;
     }
     .career-cell {
-      padding: 48px 40px 48px 0;
+      padding: 0;
     }
-    .career-cell:nth-child(3) { padding-left: 40px; }
-    .career-cell:nth-child(5) { padding-left: 40px; }
     .career-era {
       font-family: var(--font-head);
       font-size: 0.7rem;
@@ -840,13 +832,7 @@
       .layer-card:nth-child(even) { padding-left: 0; }
       .metrics-grid { grid-template-columns: repeat(2, 1fr); }
       .metric-cell:nth-child(2n) { border-right: none; }
-      .principles-grid { grid-template-columns: repeat(2, 1fr); }
-      .principle-cell:nth-child(2n) { border-right: none; }
-      .career-timeline { grid-template-columns: 1fr; }
-      .career-timeline .line-v { display: none; }
-      .career-cell { padding: 40px 0; border-bottom: 1px solid var(--line); }
-      .career-cell:nth-child(3), .career-cell:nth-child(5) { padding-left: 0; }
-      .career-cell:last-child { border-bottom: none; }
+      .career-timeline { grid-template-columns: 1fr; gap: 40px 0; }
       .philosophy-grid { grid-template-columns: 1fr; }
       .philosophy-grid .line-v { display: none; }
       .philosophy-left { padding: 80px 0; }
@@ -872,8 +858,7 @@
       .metrics-grid { grid-template-columns: 1fr; }
       .metric-cell { border-right: none; }
       .principles-grid { grid-template-columns: 1fr; }
-      .principle-cell { border-right: none; border-bottom: 1px solid var(--line); }
-      .principle-cell:last-child { border-bottom: none; }
+      .principles-list { gap: 8px 16px; }
       .footer-inner { grid-template-columns: 1fr; }
       .footer-cell { border-right: none; border-bottom: 1px solid var(--line); padding: 8px 0; }
       .footer-cell:last-child { border-bottom: none; }
@@ -1072,34 +1057,15 @@
     </div>
   </div>
 
-  <!-- PRINCIPLES STRIP -->
+  <!-- PRINCIPLES -->
   <div class="principles bleed-line">
-    <div class="principles-grid stagger">
-      <div class="principle-cell reveal reveal--up">
-        <div class="p-num">01</div>
-        <h3>Dual-Track Always Visible</h3>
-        <p>Org-wide vision and close-to-product execution at the same time. Always both.</p>
-      </div>
-      <div class="principle-cell reveal reveal--up" style="padding-left: 24px;">
-        <div class="p-num">02</div>
-        <h3>Co-Creation Over Mandate</h3>
-        <p>Nothing imposed. Skeletons with intentional gaps filled by the people who become champions.</p>
-      </div>
-      <div class="principle-cell reveal reveal--up" style="padding-left: 24px;">
-        <div class="p-num">03</div>
-        <h3>Representation in Writing</h3>
-        <p>When disciplines show up together in artifacts, thinking shifts. Once thinking shifts, behavior follows.</p>
-      </div>
-      <div class="principle-cell reveal reveal--up" style="padding-left: 24px;">
-        <div class="p-num">04</div>
-        <h3>Three-Level Measurement</h3>
-        <p>Everything measured at three levels: tactical, strategic, and cultural. The numbers AND the culture shifts.</p>
-      </div>
-      <div class="principle-cell reveal reveal--up" style="padding-left: 24px;">
-        <div class="p-num">05</div>
-        <h3>Earn Trust Before Spending It</h3>
-        <p>Listen first. Two weeks of conversations before proposing a single solution.</p>
-      </div>
+    <div class="section-label reveal reveal--left" style="margin-bottom: 24px;">Guiding Principles</div>
+    <div class="principles-list reveal reveal--up">
+      <span>Dual-Track Always Visible</span>
+      <span>Co-Creation Over Mandate</span>
+      <span>Representation in Writing</span>
+      <span>Three-Level Measurement</span>
+      <span>Earn Trust Before Spending It</span>
     </div>
   </div>
 
@@ -1122,14 +1088,12 @@
           <div class="career-org">Brand Narratives</div>
           <div class="career-desc">Crafting narratives that connected small businesses to the people who needed to find them. Learned to scale human connection without diluting it.</div>
         </div>
-        <div class="line-v reveal reveal--line-v"></div>
         <div class="career-cell reveal reveal--up">
           <div class="career-era">Chapter Two</div>
           <div class="career-role">Design Program Management</div>
           <div class="career-org">Meta / Facebook</div>
           <div class="career-desc">Among the first 15 DPMs. Helped scale the discipline to 300+. Led DPM for 5 of Mark Zuckerberg's company priorities. Part of the Facebook-to-Meta rebrand.</div>
         </div>
-        <div class="line-v reveal reveal--line-v"></div>
         <div class="career-cell reveal reveal--up">
           <div class="career-era">Chapter Three</div>
           <div class="career-role">Staff Design Program Manager</div>
